@@ -1,0 +1,32 @@
+#!/bin/bash
+
+if [ -f /usr/share/applications/org.kde.latte-dock.desktop ]; then
+    sed -i 's/Exec=latte-dock/Exec=feren-latte-launch/g' /usr/share/applications/org.kde.latte-dock.desktop
+    sed -i '/Desktop Action Quit/d' /usr/share/applications/org.kde.latte-dock.desktop
+    sed -i '/Name=Quit/d' /usr/share/applications/org.kde.latte-dock.desktop
+    sed -i '/Exec=feren-latte-launch quit/d' /usr/share/applications/org.kde.latte-dock.desktop
+    sed -i '/^$/d' /usr/share/applications/org.kde.latte-dock.desktop
+    sed -i 's%Exec=/usr/bin/latte-dock%Exec=/usr/bin/feren-latte-launch%g' /usr/share/applications/org.kde.latte-dock.desktop
+    currentactions=$(grep 'Actions=' /usr/share/applications/org.kde.latte-dock.desktop)
+    if [ -z "$currentactions" ] || [ "$currentactions" = "Actions=Quit;" ]; then
+        currentactions="Actions="
+    fi
+    currentactions=$(echo "$currentactions" | sed 's/Actions=//g')
+    if ! grep -q 'Actions=' /usr/share/applications/org.kde.latte-dock.desktop; then
+        echo "##Define Actions
+Actions=${currentactions}Quit;
+
+[Desktop Action Quit]
+Name=Quit
+Exec=feren-latte-launch quit" >> /usr/share/applications/org.kde.latte-dock.desktop
+    else
+        sed -i $'/Actions=/c\Actions='"${currentactions}"'Quit;'"\n\n"'[Desktop Action Quit]'"\n"'Name=Quit'"\n"'Exec=feren-latte-launch quit' /usr/share/applications/org.kde.latte-dock.desktop
+    fi
+fi
+if [ ! -f /etc/skel/.config/autostart/org.kde.latte-dock.desktop ]; then
+    cp -f /usr/share/applications/org.kde.latte-dock.desktop /etc/skel/.config/autostart/org.kde.latte-dock.desktop
+    chown -hR root:users /etc/skel/.config/autostart/org.kde.latte-dock.desktop
+    chmod +x /etc/skel/.config/autostart/org.kde.latte-dock.desktop
+fi
+
+exit 0

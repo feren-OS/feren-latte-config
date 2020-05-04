@@ -1,0 +1,8 @@
+[ScreenConnectors]
+10=eDP
+
+[UniversalSettings]
+currentLayout=Default
+lastNonAssignedLayout=Default
+launchers=applications:vivaldi-stable.desktop,applications:nemo.desktop,applications:vlc.desktop,applications:feren-store.desktop,applications:libreoffice-startcenter.desktop,applications:org.kde.kate.desktop,applications:io.elementary.photos.desktop,applications:org.kde.ksysguard.desktop,applications:org.gnome.Geary.desktop
+version=2
